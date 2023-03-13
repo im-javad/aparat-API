@@ -14,4 +14,20 @@ class AparatHandler{
         
         return $popularVideos->json()['mostviewedvideos'];
     }
+
+    public function login()
+    {   
+        $userId = config('aparat.userId');
+        
+        $password = sha1(md5(config('aparat.password')));
+
+        $url = "https://www.aparat.com/etc/api/login/luser/{userId}/lpass/{$password}";
+
+        $url = str_replace('{userId}' , $userId , $url);
+
+        $result = $this->http::post($url);
+        
+        return $result->json()['login'];
+    }
 }
+ 
