@@ -8,7 +8,7 @@ class AparatHandler{
 
     public function receivePopularVideos()
     {
-        $url = 'https://www.aparat.com/etc/api/mostviewedvideos';
+        $url = config('aparat.urls.popular-videos');
 
         $popularVideos = $this->http::get($url);
         
@@ -21,13 +21,14 @@ class AparatHandler{
         
         $password = sha1(md5(config('aparat.password')));
 
-        $url = "https://www.aparat.com/etc/api/login/luser/{userId}/lpass/{$password}";
+        $url = config('aparat.urls.login');
 
         $url = str_replace('{userId}' , $userId , $url);
+        
+        $url = str_replace('{password}' , $password , $url);
 
         $result = $this->http::post($url);
         
         return $result->json()['login'];
     }
 }
- 
