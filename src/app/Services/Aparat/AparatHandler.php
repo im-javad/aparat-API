@@ -19,12 +19,12 @@ class AparatHandler{
     {   
         $userId = config('aparat.userId');
         
-        $password = sha1(md5(config('aparat.password')));
+        $password = config('aparat.password');
 
         $url = config('aparat.urls.login');
 
         $url = str_replace('{userId}' , $userId , $url);
-        
+
         $url = str_replace('{password}' , $password , $url);
 
         $result = $this->http::post($url);
