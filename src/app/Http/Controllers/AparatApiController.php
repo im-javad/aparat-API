@@ -35,7 +35,7 @@ class AparatApiController extends Controller
             
             return $this->handleResponse($response , 201);
         } catch (systemErrorInGettingTheFormActionException $event) {
-            $this->errorResponse($event->getMessage() , 404);
+            return $this->errorResponse($event->getMessage() , 404);
         }
     }
 
@@ -53,7 +53,7 @@ class AparatApiController extends Controller
         
             return $this->handleResponse($response , 200);
         } catch (\App\Exceptions\VideoNotFoundException $event) {
-            $this->errorResponse($event->getMessage() , 404);
+            return $this->errorResponse($event->getMessage() , 404);
         }
     }
 }

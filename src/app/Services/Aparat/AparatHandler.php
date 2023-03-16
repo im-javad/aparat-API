@@ -125,7 +125,7 @@ class AparatHandler{
     public function replacement($url , $options = [])
     {
         foreach ($options as $key => $value) {
-            $url = str_repeat("{{$key}}" , $value , $url);
+            $url = str_replace("{{$key}}" , $value , $url);
         }
         
         return $url;
