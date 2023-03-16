@@ -7,3 +7,5 @@ Route::get('/popular-videos', [AparatApiController::class , 'popularVideos']);
 
 Route::get('/login', [AparatApiController::class , 'login']);
 
+// for this route, we Postman because of sending the request parameters
+Route::post('/upload', [AparatApiController::class , 'upload']);

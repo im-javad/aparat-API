@@ -6,6 +6,7 @@ return [
 
     'urls' => [
         'popular-videos' => 'https://www.aparat.com/etc/api/mostviewedvideos',
-        'login' => 'https://www.aparat.com/etc/api/login/luser/{userId}/lpass/{password}'
-    ]
+        'login' => 'https://www.aparat.com/etc/api/login/luser/{userId}/lpass/{password}',
+        'uploadForm' => 'https://www.aparat.com/etc/api/upload​form/luser/{userId}/ltoken/{token}',
+    ],
 ];

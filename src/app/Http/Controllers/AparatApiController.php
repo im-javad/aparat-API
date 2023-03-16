@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\systemErrorInGettingTheFormActionException;
 use App\Services\Aparat\AparatHandler;
+use Illuminate\Http\Request;
 
 class AparatApiController extends Controller
 {
@@ -20,9 +22,28 @@ class AparatApiController extends Controller
     {
         $response = $this->aparat->login();
 
+        return $this->successResponse($response);
+    }
+
+    public function upload(Request $request)
+    {
+        try {
+            $response = $this->aparat->upload($request->filename , $request->title , $request->category);
+            
+            return $this->successResponse($response);
+        } catch (systemErrorInGettingTheFormActionException $event) {
+            return response()->json([
+                'error' => $event->getMessage(),
+                'third_party' => 'https://aparat.com',
+            ] , 404);
+        }
+    }
+    
+    private function successResponse($data , $option = null)
+    {
         return response()->json([
-            'data' => $response,
-            'third_party' => 'https://aparat.com'
+            'data' => $data,
+            'third_party' => 'https://aparat.com',
         ] , 200);
     }
 }
