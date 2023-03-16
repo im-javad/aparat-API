@@ -67,6 +67,13 @@ class AparatHandler{
         return $uploadResult->json('uploadpost');
     }
 
+    public function delete(string $uid)
+    {
+        $deleteVidoResult = $this->http::get($this->getDeleteVideoUrl($uid));
+
+        return $deleteVidoResult->json('deletevideo');
+    }
+
     private function getUserToken(){
         return Cache::remember('aparat_token', self::TOKEN_CACHE_EXPIRED , function () {
             $loginData = $this->login();
@@ -93,5 +100,19 @@ class AparatHandler{
             throw new \App\Exceptions\systemErrorInGettingTheFormActionException();
 
         return $result->json('uploadform');
+    }
+
+    private function getDeleteVideoUrl(string $uid){
+        $url = config('aparat.urls.deleteVideoLink');
+        
+        $url = str_replace( '{uid}' , $uid , $url);    
+        
+        $url = str_replace('{userId}' , $this->userId , $url);
+
+        $url = str_replace('{token}', $this->token , $url);
+
+        $deleteVidoUrl = $this->http::get($url);
+
+        return $deleteVidoUrl->json('deletevideolink.deleteurl');
     }
 }

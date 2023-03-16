@@ -22,7 +22,7 @@ class AparatApiController extends Controller
     {
         $response = $this->aparat->login();
 
-        return $this->successResponse($response);
+        return $this->handleResponse($response , 200);
     }
 
     public function upload(Request $request)
@@ -30,7 +30,7 @@ class AparatApiController extends Controller
         try {
             $response = $this->aparat->upload($request->filename , $request->title , $request->category);
             
-            return $this->successResponse($response);
+            return $this->handleResponse($response , 201);
         } catch (systemErrorInGettingTheFormActionException $event) {
             return response()->json([
                 'error' => $event->getMessage(),
@@ -38,12 +38,19 @@ class AparatApiController extends Controller
             ] , 404);
         }
     }
+
+    public function delete(Request $request)
+    {
+        $response = $this->aparat->delete($request->uid);
+
+        return $this->handleResponse($response , 200);
+    }
     
-    private function successResponse($data , $option = null)
+    private function handleResponse($data , $statusCode , $option = null)
     {
         return response()->json([
             'data' => $data,
             'third_party' => 'https://aparat.com',
-        ] , 200);
+        ] , $statusCode);
     }
 }
