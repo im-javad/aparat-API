@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\systemErrorInGettingTheFormActionException;
 use App\Services\Aparat\AparatHandler;
+use App\Services\Aparat\Traits\AparatApi;
 use Illuminate\Http\Request;
 
 class AparatApiController extends Controller
 {
+    use AparatApi;
+
     public function __construct(private AparatHandler $aparat) {
     }
 
@@ -32,10 +35,7 @@ class AparatApiController extends Controller
             
             return $this->handleResponse($response , 201);
         } catch (systemErrorInGettingTheFormActionException $event) {
-            return response()->json([
-                'error' => $event->getMessage(),
-                'third_party' => 'https://aparat.com',
-            ] , 404);
+            $this->errorResponse($event->getMessage() , 404);
         }
     }
 
@@ -53,18 +53,7 @@ class AparatApiController extends Controller
         
             return $this->handleResponse($response , 200);
         } catch (\App\Exceptions\VideoNotFoundException $event) {
-            return response()->json([
-                'error' => $event->getMessage(),
-                'third_party' => 'https://aparat.com',
-            ] , 404);
+            $this->errorResponse($event->getMessage() , 404);
         }
-    }
-    
-    private function handleResponse($data , $statusCode , $option = null)
-    {
-        return response()->json([
-            'data' => $data,
-            'third_party' => 'https://aparat.com',
-        ] , $statusCode);
     }
 }
