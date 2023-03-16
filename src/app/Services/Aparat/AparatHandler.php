@@ -30,9 +30,7 @@ class AparatHandler{
     {           
         $url = config('aparat.urls.login');
 
-        $url = str_replace('{userId}' , $this->userId , $url);
-
-        $url = str_replace('{password}' , $this->password , $url);
+        $url = $this->replacement($url , ['userId' => $this->userId , 'password' => $this->password]);
 
         $result = $this->http::post($url);
         
@@ -78,7 +76,7 @@ class AparatHandler{
     {
         $url = config('aparat.urls.video-information');
 
-        $url = str_replace('{uid}' , $uid , $url);
+        $url = $this->replacement($url , ['uid' => $uid]);
 
         $result = $this->http::get($url);
         
@@ -104,9 +102,7 @@ class AparatHandler{
     {
         $url = config('aparat.urls.uploadForm');
 
-        $url = str_replace('{userId}' , $this->userId , $url);
-        
-        $url = str_replace('{token}' , $this->token , $url);
+        $url = $this->replacement($url , ['userId' => $this->userId , 'token' => $this->token]);
         
         $result = $this->http::post($url);
 
@@ -119,14 +115,19 @@ class AparatHandler{
     private function getDeleteVideoUrl(string $uid){
         $url = config('aparat.urls.deleteVideoLink');
         
-        $url = str_replace( '{uid}' , $uid , $url);    
-        
-        $url = str_replace('{userId}' , $this->userId , $url);
-
-        $url = str_replace('{token}', $this->token , $url);
+        $url = $this->replacement($url , ['uid' => $uid , 'userId' => $this->userId , 'token' => $this->token]);
 
         $deleteVidoUrl = $this->http::get($url);
 
         return $deleteVidoUrl->json('deletevideolink.deleteurl');
+    }
+
+    public function replacement($url , $options = [])
+    {
+        foreach ($options as $key => $value) {
+            $url = str_repeat("{{$key}}" , $value , $url);
+        }
+        
+        return $url;
     }
 }
