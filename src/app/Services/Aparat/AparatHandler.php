@@ -74,6 +74,20 @@ class AparatHandler{
         return $deleteVidoResult->json('deletevideo');
     }
 
+    public function videoInformation(string $uid)
+    {
+        $url = config('aparat.urls.video-information');
+
+        $url = str_replace('{uid}' , $uid , $url);
+
+        $result = $this->http::get($url);
+        
+        if(!(key_exists('uid' , $result->json('video')) && $result->json('video')['uid'] === $uid))
+            throw new \App\Exceptions\VideoNotFoundException();
+
+        return $result->json('video');
+    }
+
     private function getUserToken(){
         return Cache::remember('aparat_token', self::TOKEN_CACHE_EXPIRED , function () {
             $loginData = $this->login();

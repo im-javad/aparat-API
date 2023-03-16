@@ -45,6 +45,20 @@ class AparatApiController extends Controller
 
         return $this->handleResponse($response , 200);
     }
+
+    public function videoInformation(Request $request)
+    {
+        try {
+            $response = $this->aparat->videoInformation($request->uid);
+        
+            return $this->handleResponse($response , 200);
+        } catch (\App\Exceptions\VideoNotFoundException $event) {
+            return response()->json([
+                'error' => $event->getMessage(),
+                'third_party' => 'https://aparat.com',
+            ] , 404);
+        }
+    }
     
     private function handleResponse($data , $statusCode , $option = null)
     {

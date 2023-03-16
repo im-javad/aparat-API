@@ -11,3 +11,5 @@ Route::get('/login', [AparatApiController::class , 'login']);
 Route::post('/upload', [AparatApiController::class , 'upload']);
 
 Route::get('/delete' , [AparatApiController::class , 'delete']);
+
+Route::get('/video-information' , [AparatApiController::class , 'videoInformation']);
